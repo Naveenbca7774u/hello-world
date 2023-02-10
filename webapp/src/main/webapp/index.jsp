@@ -92,4 +92,4 @@ span.psw {
   .cancelbtn {
     width: 100%;
   }
-}
+
