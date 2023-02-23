@@ -1,206 +1,55 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+<!-- This is how HTML comments look like -->
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Bricks Breaker Game</title>
-    <style>
-      canvas {
-        border: 2px solid #555;
-        background-color: #eee;
-        display: block;
-        margin: auto;
-      }
-      
-      body {
-        background-color: #f1f1f1;
-        font-family: Arial, sans-serif;
-      }
-      
-      h1 {
-        text-align: center;
-        margin-top: 50px;
-      }
-      
-      p {
-        text-align: center;
-        font-size: 20px;
-        margin-bottom: 50px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Bricks Breaker Game</h1>
-    <p>Use the arrow keys or mouse movements to control the paddle</p>
-    <canvas id="myCanvas" width="480" height="320"></canvas>
-    <script src="game.js"></script>
-  </body>
+<!-- the title will appear on the page-->
+<head>
+<title>Employee Interests Survey</title>
+</head>
+<body>
+<!-- as it is a survey form, we will need to submit the details, hence we use form -->
+<!-- We can give absolute url, or relative url like /nextpage.jsp, and specify POST or GET method -->
+<form action="http://google.co.in">
+<!-- If we remove this, every thing will move to the left of the page-->
+<div align="center">
+<!--Adds a heading to the form-->
+<h1>Employee Interests Survey form</h1>
+Enter your name:
+<!-- Input type text for small texts, specify size -->
+<input type="text" name="UserName" size=35 maxlength=35 value="">
+<!--Adds spaces - remove and see what happens -->
+</br></br>
+Enter your department:
+<input type="text" name="Deptt" size=35 maxlength=35 value=""> </br> </br>
+Tell us a little about yourself:
+<!-- For writing lot of text like descriptions with text wrapping,
+if you dont want text wrapping, you can add wrap = "off" (horizontal scrollbar -->
+<textarea name="Comments" cols=30 rows=4></textarea> </br> </br>
+Do you exercise at home?
+<!-- Radio buttons help you choose one out of the many values -->
+<input type="radio" name="exe" value=1>Yes
+<input type="radio" name="exe" value=2>No
+</p>
+How do you like to read about your favorite topics?
+<p>
+<!--Checkbox lets you select multiple options -->
+<input type="checkbox" name="Books">Books
+<input type="checkbox" name="Web">Online resources
+<input type="checkbox" name="Phone">Phone apps
+<input type="checkbox" name="Magazines">Magazines
+</p>
+What genre of movies do you like?
+<!--Select box lets you choose one of the multiple dropdown options-->
+<select name="moviepref" ><option>
+<option value=1 selected = "true">comedy
+<option value=2 >romance
+<option value=3 >thriller
+<option value=4 >horror
+<option value=5 >biopic
+</select>
+</br></br>
+<!--submits the information entered in the form by the user -->
+<input type=submit value="Submit form">
+</div>
+</form>
+</body>
 </html>
-
-// Variables
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
-var ballRadius = 10;
-var x = canvas.width/2;
-var y = canvas.height-30;
-var dx = 2;
-var dy = -2;
-var paddleHeight = 10;
-var paddleWidth = 75;
-var paddleX = (canvas.width-paddleWidth)/2;
-var rightPressed = false;
-var leftPressed = false;
-var brickRowCount = 3;
-var brickColumnCount = 5;
-var brickWidth = 75;
-var brickHeight = 20;
-var brickPadding = 10;
-var brickOffsetTop = 30;
-var brickOffsetLeft = 30;
-var score = 0;
-var bricks = [];
-
-// Create bricks
-for(var c=0; c<brickColumnCount; c++) {
-  bricks[c] = [];
-  for(var r=0; r<brickRowCount; r++) {
-    bricks[c][r] = { x: 0, y: 0, status: 1 };
-  }
-}
-
-// Event listeners
-document.addEventListener("keydown", keyDownHandler, false);
-document.addEventListener("keyup", keyUpHandler, false);
-document.addEventListener("mousemove", mouseMoveHandler, false);
-
-// Functions
-function keyDownHandler(e) {
-  if(e.key == "Right" || e.key == "ArrowRight") {
-    rightPressed = true;
-  }
-  else if(e.key == "Left" || e.key == "ArrowLeft") {
-    leftPressed = true;
-  }
-}
-
-function keyUpHandler(e) {
-  if(e.key == "Right" || e.key == "ArrowRight") {
-    rightPressed = false;
-  }
-  else if(e.key == "Left" || e.key == "ArrowLeft") {
-    leftPressed = false;
-  }
-}
-
-function mouseMoveHandler(e) {
-  var relativeX = e.clientX - canvas.offsetLeft;
-  if(relativeX > 0 && relativeX < canvas.width) {
-    paddleX = relativeX - paddleWidth/2;
-  }
-}
-
-function drawBall() {
-  ctx.beginPath();
-  ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-  ctx.fillStyle = "#0095DD";
-  ctx.fill();
-  ctx.closePath();
-}
-
-function drawPaddle() {
-  ctx.beginPath();
-  ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-  ctx.fillStyle = "#0095DD";
-  ctx.fill();
-  ctx.closePath();
-}
-
-function drawBricks() {
-  for(var c=0; c<brickColumnCount; c++) {
-    for(var r=0; r<brickRowCount; r++) {
-      if(bricks[c][r].status == 1) {
-        var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
-        var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
-        bricks[c][r].x = brickX;
-        bricks[c][r].y = brickY;
-        ctx.beginPath();
-        ctx.rect(brickX,
-            brickY, brickWidth, brickHeight);
-            ctx.fillStyle = "#0095DD";
-            ctx.fill();
-            ctx.closePath();
-            }
-            }
-            }
-            }
-
-            function drawScore() {
-            ctx.font = "16px Arial";
-            ctx.fillStyle = "#0095DD";
-            ctx.fillText("Score: " + score, 8, 20);
-            }
-
-            function collisionDetection() {
-            for(var c=0; c<brickColumnCount; c++) {
-            for(var r=0; r<brickRowCount; r++) {
-            var b = bricks[c][r];
-            if(b.status == 1) {
-            if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
-            dy = -dy;
-            b.status = 0;
-            score++;
-            if(score == brickRowCount*brickColumnCount) {
-            alert("Congratulations! You won!");
-            document.location.reload();
-            }
-            }
-            }
-            }
-            }
-            }
-
-            function draw() {
-            // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Draw objects
-            drawBricks();
-            drawBall();
-            drawPaddle();
-            drawScore();
-            collisionDetection();
-
-            // Bounce off walls
-            if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
-            dx = -dx;
-            }
-            if(y + dy < ballRadius) {
-            dy = -dy;
-            }
-            else if(y + dy > canvas.height-ballRadius) {
-            if(x > paddleX && x < paddleX + paddleWidth) {
-            dy = -dy;
-            }
-            else {
-            alert("Game over!");
-            document.location.reload();
-            }
-            }
-
-            // Move paddle
-            if(rightPressed && paddleX < canvas.width-paddleWidth) {
-            paddleX += 7;
-            }
-            else if(leftPressed && paddleX > 0) {
-            paddleX -= 7;
-            }
-
-            // Move ball
-            x += dx;
-            y += dy;
-
-            // Call draw function repeatedly
-            requestAnimationFrame(draw);
-            }
-
-            // Call draw function
-            draw();
